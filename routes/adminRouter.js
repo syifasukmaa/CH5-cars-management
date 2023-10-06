@@ -1,0 +1,10 @@
+const router = require('express').Router();
+
+const Admin = require('../controller/adminController');
+const upload = require('../middlewares/uploader');
+
+router.get('/dashboard/admin/create', Admin.createPage);
+router.get('/dashboard/admin', Admin.findProducts);
+router.post('/products/create', upload.single('image'), Admin.createProduct);
+
+module.exports = router;
