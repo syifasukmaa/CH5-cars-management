@@ -4,11 +4,10 @@ const ApiError = require('../utils/apiError');
 
 const createProduct = async (req, res, next) => {
   const { name, price, stock } = req.body;
+  console.log(req.user);
+  const shopId = req.user.shopId;
+  let img;
   const file = req.file;
-
-  //dapatkan extensi filenya
-  const split = file.originalname.split();
-  const extension = split[split.length - 1];
 
   try {
     if (file) {
@@ -24,19 +23,16 @@ const createProduct = async (req, res, next) => {
       img = uploadedImage.url;
     }
 
-    // const img = await imagekit.upload({
-    //   file: file.buffer,
-    //   fileName: `IMG=${Date.now()}.${extension}`,
-    // });
     const newProduct = await Product.create({
       name,
       price,
       stock,
-      imageUrl: img.url,
+      imageUrl: img,
+      shopId,
     });
 
     res.status(200).json({
-      status: 'success',
+      status: 'Success',
       data: { newProduct },
     });
   } catch (err) {
@@ -49,7 +45,7 @@ const findProducts = async (req, res, next) => {
     const products = await Product.findAll();
 
     res.status(200).json({
-      status: 'success',
+      status: 'Success',
       data: { products },
     });
   } catch (err) {
@@ -66,7 +62,7 @@ const findProductById = async (req, res, next) => {
     });
 
     res.status(200).json({
-      status: 'success',
+      status: 'Success',
       data: { product },
     });
   } catch (err) {
@@ -92,8 +88,8 @@ const updateProduct = async (req, res, next) => {
     );
 
     res.status(200).json({
-      status: 'success',
-      message: 'success updated product',
+      status: 'Success',
+      message: 'Success updated product',
     });
   } catch (err) {
     next(new ApiError(err.message, 400));
@@ -109,7 +105,7 @@ const deleteProduct = async (req, res, next) => {
         id: req.params.id,
       },
     });
-    
+
     if (!product) {
       return next(new ApiError('Product id tersebut gak ada', 404));
     }
@@ -121,8 +117,8 @@ const deleteProduct = async (req, res, next) => {
     });
 
     res.status(200).json({
-      status: 'success',
-      message: 'success deleted product',
+      status: 'Success',
+      message: 'Success deleted product',
     });
   } catch (err) {
     next(new ApiError(err.message, 400));

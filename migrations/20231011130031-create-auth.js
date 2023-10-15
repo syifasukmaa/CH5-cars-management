@@ -1,31 +1,26 @@
 'use strict';
-
-const { ENUM } = require('sequelize');
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Auths', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      email: {
         type: Sequelize.STRING,
       },
-      age: {
-        type: Sequelize.INTEGER,
-      },
-      address: {
+      password: {
         type: Sequelize.STRING,
       },
-      role: {
-        type: Sequelize.ENUM(['Owner', 'Staff']),
+      confirmPassword: {
+        type: Sequelize.STRING,
       },
-      shopId: {
+      userId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +33,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Auths');
   },
 };

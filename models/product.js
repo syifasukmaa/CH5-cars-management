@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Product.belongsTo(models.Shop, {
+        foreignKey: {
+          name: 'shopId',
+          allowNull: false,
+        },
+      });
     }
   }
   Product.init(
@@ -20,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         defaultValue:
           'https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180',
+      },
+      shopId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
     },
     {
