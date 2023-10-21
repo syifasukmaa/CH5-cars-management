@@ -12,12 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Auth, {
         foreignKey: {
           name: 'userId',
-          allowNull: false,
-        },
-      });
-      User.belongsTo(models.Shop, {
-        foreignKey: {
-          name: 'shopId',
         },
       });
     }
@@ -25,13 +19,12 @@ module.exports = (sequelize, DataTypes) => {
   User.init(
     {
       name: DataTypes.STRING,
-      age: DataTypes.INTEGER,
+      age: DataTypes.NUMBER,
       address: DataTypes.STRING,
       role: {
-        type: DataTypes.ENUM(['Owner', 'Staff']),
-        defaultValue: 'Staff',
+        type: DataTypes.ENUM(['Super admin', 'Admin', 'Member']),
+        defaultValue: 'Member',
       },
-      shopId: DataTypes.INTEGER,
     },
     {
       sequelize,

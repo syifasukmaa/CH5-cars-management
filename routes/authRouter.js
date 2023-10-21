@@ -1,10 +1,21 @@
-const router = require('express').Router();
+const router = require("express").Router()
 
-const Auth = require('../controller/authController');
-const checkToken = require('../middlewares/checkToken');
+const Auth = require("../controller/authController")
+const checkToken = require("../middlewares/checkToken")
+const authenticate = require("../middlewares/authenticate")
+const checkRole = require("../middlewares/checkRole")
 
-router.post('/register', Auth.register);
-router.post('/login', Auth.login);
-router.get('/checkToken', checkToken, Auth.checktoken);
+router.post("/member/register", Auth.register)
+router.post("/member/login", Auth.login)
 
-module.exports = router;
+router.post(
+  "/admin/register",
+  authenticate,
+  checkRole(["Super admin"]),
+  Auth.register
+)
+router.post("/admin/login", Auth.login)
+
+router.get("/me", checkToken, Auth.checktoken)
+
+module.exports = router

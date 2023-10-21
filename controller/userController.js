@@ -1,22 +1,22 @@
-const { User } = require('../models');
-const ApiError = require('../utils/apiError');
+const { User, Auth } = require("../models")
+const ApiError = require("../utils/apiError")
 
 const findAllUser = async (req, res, next) => {
   try {
     const users = await User.findAll({
-      include: ['Auth', 'Shop'],
-    });
+      include: ["Auth"],
+    })
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: {
         users,
       },
-    });
+    })
   } catch (error) {
-    next(new ApiError(error.message, 400));
+    return next(new ApiError(error.message, 400))
   }
-};
+}
 
 const findUserById = async (req, res, next) => {
   try {
@@ -24,22 +24,22 @@ const findUserById = async (req, res, next) => {
       where: {
         id: req.params.id,
       },
-      include: ['Auth', 'Shop'],
-    });
+      include: ["Auth"],
+    })
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: {
         user,
       },
-    });
+    })
   } catch (error) {
-    next(new ApiError(error.message, 400));
+    return next(new ApiError(error.message, 400))
   }
-};
+}
 
 const updateUser = async (req, res, next) => {
-  const { name, age, address, role } = req.body;
+  const { name, age, address, role } = req.body
   try {
     await User.update(
       {
@@ -53,16 +53,16 @@ const updateUser = async (req, res, next) => {
           id: req.params.id,
         },
       }
-    );
+    )
 
-    res.status(200).json({
-      status: 'success',
-      message: 'User updated',
-    });
+    res.status(201).json({
+      status: "success",
+      message: "User updated",
+    })
   } catch (error) {
-    next(new ApiError(error.message, 400));
+    return next(new ApiError(error.message, 400))
   }
-};
+}
 
 const deleteUser = async (req, res, next) => {
   try {
@@ -70,30 +70,36 @@ const deleteUser = async (req, res, next) => {
       where: {
         id: req.params.id,
       },
-    });
+    })
 
     if (!user) {
-      next(new ApiError('User not found', 404));
+      return next(new ApiError("User not found", 404))
     }
 
     await User.destroy({
       where: {
         id: req.params.id,
       },
-    });
+    })
+
+    await Auth.destroy({
+      where: {
+        userId: req.params.id,
+      },
+    })
 
     res.status(200).json({
-      status: 'success',
-      message: 'User deleted',
-    });
+      status: "success",
+      message: "User deleted",
+    })
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    return next(new ApiError(err.message, 400))
   }
-};
+}
 
 module.exports = {
   findAllUser,
   findUserById,
   updateUser,
   deleteUser,
-};
+}
