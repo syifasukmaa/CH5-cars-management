@@ -1,0 +1,1823 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Challenge FSW 2 Chapter 5",
+    "description": "API Cars Management with postgresql and sequelize",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "ini API untuk Auth resources"
+    },
+    {
+      "name": "Users",
+      "description": "ini API untuk USERS resources"
+    },
+    {
+      "name": "Cars",
+      "description": "ini API untuk CARS resources"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local Server"
+    }
+  ],
+  "paths": {
+    "/auth/member/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Member register",
+        "description": "Endpoint for member register",
+        "requestBody": {
+          "description": "This is the request body for successful member register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Flora"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "flora@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "floraa123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "floraa123"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 19
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Tangerang"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Member registration was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User successful register"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "flora"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "flora@gmail.com"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "GWHUHGUAWHGUAHGIAWBGVIAHWBVIAW"
+                        },
+                        "confirmPassword": {
+                          "type": "string",
+                          "example": "GWHUHGUAWHGUAHGIAWBGVIAHWBVIAW"
+                        },
+                        "age": {
+                          "type": "integer",
+                          "example": 19
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "Tangerang"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": ["Super admin", "admin", "Member"],
+                          "example": "Admin"
+                        },
+                        "updatedAt": {
+                          "type": "date-time",
+                          "example": "2023-10-21T10:08:34.514Z"
+                        },
+                        "createdAt": {
+                          "type": "date-time",
+                          "example": "2023-10-21T10:08:34.514Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Minimum password must be 8 charachter"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User email already taken"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/member/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Member Login",
+        "description": "Endpoint for member login",
+        "requestBody": {
+          "description": "This is the request body for successful member login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "Diah@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "diahnur123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "diahnur123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Member logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User sucessful login"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "GWHUHGUAWHGUAHGIAWBGVIAHWBVIAW"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "wrong password or user doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/admin/register": {
+      "post": {
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Admin register",
+        "description": "Endpoint for Admin register",
+        "requestBody": {
+          "description": "This is the request body for successful Admin register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Fauziah"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "fauziah@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "fauziah123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "fauziah123"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 20
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Kerawang"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["Super admin", "admin", "Member"],
+                    "example": "Admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin registration was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User successful register"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "fauziah"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "fauziah@gmail.com"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "GWHUHGUAWHGUAHGIAWBGVIAHWBVIAW"
+                        },
+                        "confirmPassword": {
+                          "type": "string",
+                          "example": "GWHUHGUAWHGUAHGIAWBGVIAHWBVIAW"
+                        },
+                        "age": {
+                          "type": "integer",
+                          "example": 20
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "Kerawang"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": ["Super admin", "admin", "Member"],
+                          "example": "Admin"
+                        },
+                        "updatedAt": {
+                          "type": "date-time",
+                          "example": "2023-10-21T10:08:34.514Z"
+                        },
+                        "createdAt": {
+                          "type": "date-time",
+                          "example": "2023-10-21T10:08:34.514Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Minimum password must be 8 charachter"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email already",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User email already taken"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Token doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/admin/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Admin Login",
+        "description": "Endpoint for Admin login",
+        "requestBody": {
+          "description": "This is the request body for successful Admin login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "syifa@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "syifaa123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "syifaa123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Admin logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User sucessful login"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "GWHUHGUAWHGUAHGIAWBGVIAHWBVIAW"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "wrong password or user doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Token Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "CheckCurrent User",
+        "description": "Endpoint for check current user",
+        "responses": {
+          "201": {
+            "description": "Admin registration was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "example": {
+                            "$ref": "#/components/User"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/cars": {
+      "post": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Create Car",
+        "description": "Endpoint for create new car",
+        "requestBody": {
+          "description": "This is the request body for successful create new car",
+          "$ref": "#/components/requestBodyCar"
+        },
+        "responses": {
+          "201": {
+            "description": "Create car was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success create new car"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Brio"
+                        },
+                        "price": {
+                          "type": "float",
+                          "example": 200000
+                        },
+                        "size": {
+                          "type": "string",
+                          "enum": ["small", "medium", "large"],
+                          "example": "small"
+                        },
+                        "available": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "image": {
+                          "type": "string",
+                          "format": "binary",
+                          "example": "https://res.cloudinary.com/day8xqvrf/image/upload/v1697882793/gixuyjfykiufcb7hcwnf.jpg"
+                        },
+                        "imageId": {
+                          "type": "string",
+                          "example": "gixuyjfykiufcb7hcwnf"
+                        },
+                        "createdBy": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "updatedBy": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "updatedAt": {
+                          "type": "date-time",
+                          "example": "2023-10-21T10:08:34.514Z"
+                        },
+                        "createdAt": {
+                          "type": "date-time",
+                          "example": "2023-10-21T10:08:34.514Z"
+                        },
+                        "deletedBy": {
+                          "type": "integer",
+                          "example": null
+                        },
+                        "deletedAt": {
+                          "type": "date-time",
+                          "example": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Get All Car",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name car",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "available",
+            "in": "query",
+            "description": "Available car",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Available car",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["small", "medium", "large"]
+            }
+          }
+        ],
+        "description": "Endpoint for get all car",
+        "responses": {
+          "201": {
+            "description": "Get all car was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success create new car"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/Car"
+                          },
+                          "example": [
+                            {
+                              "id": 2,
+                              "name": "Pajero",
+                              "price": 400000,
+                              "size": "large",
+                              "available": false,
+                              "image": "https://res.cloudinary.com/day8xqvrf/image/upload/v1697862628/r4szurzi4fwze9civrch.jpg",
+                              "imageId": "r4szurzi4fwze9civrch",
+                              "createdBy": 2,
+                              "updatedBy": 2,
+                              "deletedBy": 1,
+                              "createdAt": "2023-10-21T04:32:29.738Z",
+                              "updatedAt": "2023-10-21T05:02:40.788Z",
+                              "deletedAt": "2023-10-21T05:02:40.801Z",
+                              "creator": {
+                                "id": 2,
+                                "name": "Shani",
+                                "age": 25,
+                                "address": "Yogya",
+                                "role": "Super admin",
+                                "createdAt": "2023-10-21T04:28:14.883Z",
+                                "updatedAt": "2023-10-21T04:28:14.883Z"
+                              },
+                              "updater": {
+                                "id": 2,
+                                "name": "Shani",
+                                "age": 25,
+                                "address": "Yogya",
+                                "role": "Super admin",
+                                "createdAt": "2023-10-21T04:28:14.883Z",
+                                "updatedAt": "2023-10-21T04:28:14.883Z"
+                              },
+                              "deleter": {
+                                "id": 1,
+                                "name": "Syifa",
+                                "age": 21,
+                                "address": "Depok",
+                                "role": "Super admin",
+                                "createdAt": "2023-10-21T04:28:14.883Z",
+                                "updatedAt": "2023-10-21T04:28:14.883Z"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Get Car By Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Endpoint for get car by id",
+        "responses": {
+          "201": {
+            "description": "Get car by id was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "example": {
+                            "$ref": "#/components/Car"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Token": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Id": {
+            "description": "Id Car not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id ${id} doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Update Car",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Endpoint for update car",
+        "requestBody": {
+          "description": "This is the request body for successful update car",
+          "$ref": "#/components/requestBodyCar"
+        },
+        "responses": {
+          "201": {
+            "description": "Update car was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success update car"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "example": {
+                            "$ref": "#/components/Car"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Token": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Id": {
+            "description": "Id Car not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id ${id} doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Delete By Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Endpoint for delete car by id",
+        "responses": {
+          "201": {
+            "description": "Delete car by id was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success delete car where id ${id}"
+                    },
+                    "data": {
+                      "type": "integer",
+                      "nullable": true,
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Token": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Id": {
+            "description": "Id Car not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id ${id} doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Get All User",
+        "description": "Endpoint for get all user",
+        "responses": {
+          "201": {
+            "description": "Get all user was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success get all user"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": "#/components/User",
+                          "example": [
+                            {
+                              "id": 1,
+                              "name": "Syifa",
+                              "age": 21,
+                              "address": "Depok",
+                              "role": "Super admin",
+                              "createdAt": "2023-10-21T04:28:14.883Z",
+                              "updatedAt": "2023-10-21T04:28:14.883Z",
+                              "Auth": {
+                                "id": 1,
+                                "email": "syifa@gmail.com",
+                                "password": "$2a$12$9j6wTBoYh.A6/Qi85gLORuAM6ekvTuWM9FFft1EsIJgKYP7/YaEpq",
+                                "confirmPassword": "$2a$12$9j6wTBoYh.A6/Qi85gLORuAM6ekvTuWM9FFft1EsIJgKYP7/YaEpq",
+                                "userId": 1,
+                                "createdAt": "2023-10-21T04:28:15.071Z",
+                                "updatedAt": "2023-10-21T04:28:15.071Z"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Get user By Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Endpoint for get user by id",
+        "responses": {
+          "201": {
+            "description": "Get user by id was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "example": {
+                            "$ref": "#/components/User"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Token": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Id": {
+            "description": "Id user not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id ${id} doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Update Car",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Endpoint for update user",
+        "requestBody": {
+          "description": "This is the request body for successful update user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "gita sekar"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 23
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Jaksel"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["Super admin", "admin", "Member"],
+                    "example": "Admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Update user was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User updated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Permisson user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You do not have permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Token": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Id": {
+            "description": "Id User not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id ${id} doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Delete user By Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Endpoint for delete user by id",
+        "responses": {
+          "201": {
+            "description": "Delete user by id was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success delete user where id ${id}"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "something wrong!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Permisson user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You do not have permission to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Token": {
+            "description": "Token not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404_Id": {
+            "description": "Id user not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id ${id} doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "User": {
+      "id": 2,
+      "name": "Shani",
+      "age": 25,
+      "address": "Yogya",
+      "role": "Super admin",
+      "createdAt": "2023-10-21T04:28:14.883Z",
+      "updatedAt": "2023-10-21T04:28:14.883Z",
+      "Auth": {
+        "id": 2,
+        "email": "shani@gmail.com",
+        "password": "$2a$12$kSVktv0Y12Vhw7qfohfnmui1SYEhOH6VNAgsBnOeGpeb3xV6arIKG",
+        "confirmPassword": "$2a$12$kSVktv0Y12Vhw7qfohfnmui1SYEhOH6VNAgsBnOeGpeb3xV6arIKG",
+        "userId": 2,
+        "createdAt": "2023-10-21T04:28:15.071Z",
+        "updatedAt": "2023-10-21T04:28:15.071Z"
+      }
+    },
+    "requestBodyCar": {
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Brio 2023"
+              },
+              "price": {
+                "type": "float",
+                "example": 200000
+              },
+              "size": {
+                "type": "string",
+                "enum": ["small", "medium", "large"],
+                "example": "small"
+              },
+              "available": {
+                "type": "boolean",
+                "example": true
+              },
+              "image": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Car": {
+      "id": 1,
+      "name": "Civic Red 2023",
+      "price": 355000,
+      "size": "medium",
+      "available": true,
+      "image": "https://res.cloudinary.com/day8xqvrf/image/upload/v1697862552/ghzoujmfem0jkpj9ttly.jpg",
+      "imageId": "ghzoujmfem0jkpj9ttly",
+      "createdBy": 2,
+      "updatedBy": 1,
+      "deletedBy": null,
+      "createdAt": "2023-10-21T04:31:13.602Z",
+      "updatedAt": "2023-10-21T05:02:09.807Z",
+      "deletedAt": null,
+      "creator": {
+        "id": 2,
+        "name": "Shani",
+        "age": 25,
+        "address": "Yogya",
+        "role": "Super admin",
+        "createdAt": "2023-10-21T04:28:14.883Z",
+        "updatedAt": "2023-10-21T04:28:14.883Z"
+      },
+      "updater": {
+        "id": 2,
+        "name": "Shani",
+        "age": 25,
+        "address": "Yogya",
+        "role": "Super admin",
+        "createdAt": "2023-10-21T04:28:14.883Z",
+        "updatedAt": "2023-10-21T04:28:14.883Z"
+      },
+      "deleter": null
+    }
+  }
+}

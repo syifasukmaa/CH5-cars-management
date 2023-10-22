@@ -9,7 +9,6 @@ const checkRole = require("../middlewares/checkRole")
 const checkUser = require("../middlewares/checkUser")
 const checkId = require("../middlewares/checkId")
 
-
 router.get(
   "/",
   authenticate,
@@ -17,13 +16,7 @@ router.get(
   user.findAllUser
 )
 router.get("/:id", checkId(User), authenticate, user.findUserById)
-router.patch(
-  "/:id",
-  checkId(User),
-  authenticate,
-  checkRole(["Super admin"]),
-  user.updateUser
-)
+router.patch("/:id", checkId(User), authenticate, checkUser, user.updateUser)
 router.delete("/:id", checkId(User), authenticate, checkUser, user.deleteUser)
 
 module.exports = router

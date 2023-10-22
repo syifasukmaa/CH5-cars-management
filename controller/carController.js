@@ -3,6 +3,7 @@ const imagekit = require("../lib/imagekit")
 const cloudinary = require("../lib/cloudinary")
 const ApiError = require("../utils/apiError")
 const { Op } = require("sequelize")
+const car = require("../models/car")
 
 const createCar = async (req, res, next) => {
   try {
@@ -32,8 +33,10 @@ const createCar = async (req, res, next) => {
 
 const findCars = async (req, res, next) => {
   try {
-    const { name, available, category } = req.query
-    const condition = {}
+    const { name, available, size } = req.query
+    const condition = {
+      deletedAt: null,
+    }
 
     if (name) {
       condition.name = { [Op.iLike]: "%" + name + "%" }
@@ -41,15 +44,17 @@ const findCars = async (req, res, next) => {
     if (available) {
       condition.available = available
     }
-    if (category) {
-      condition.category = category
+    if (size) {
+      condition.size = size
     }
 
     const cars = await Car.findAll({
-      where: condition,
       paranoid: false,
+      where: condition,
       include: ["creator", "updater", "deleter"],
     })
+
+    if (cars.length == 0) return next(new ApiError(`Car doesn't exist`, 404))
 
     res.status(200).json({
       status: "Success",
@@ -81,7 +86,8 @@ const findCarById = async (req, res, next) => {
 const updateCar = async (req, res, next) => {
   try {
     const id = req.params.id
-    const { name, price, size, available } = req.body
+    const { name, size, available } = req.body
+    let price = parseFloat(req.body.price)
     const file = req?.file
 
     const carId = await Car.findOne({ where: { id } })

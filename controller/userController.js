@@ -66,9 +66,10 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
+    const id = req.params.id
     const user = await User.findOne({
       where: {
-        id: req.params.id,
+        id: id,
       },
     })
 
@@ -78,19 +79,19 @@ const deleteUser = async (req, res, next) => {
 
     await User.destroy({
       where: {
-        id: req.params.id,
+        id: id,
       },
     })
 
     await Auth.destroy({
       where: {
-        userId: req.params.id,
+        userId: id,
       },
     })
 
     res.status(200).json({
       status: "success",
-      message: "User deleted",
+      message: `Success delete user where id ${id}`,
     })
   } catch (err) {
     return next(new ApiError(err.message, 400))

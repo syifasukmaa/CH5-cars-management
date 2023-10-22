@@ -48,13 +48,14 @@ const register = async (req, res, next) => {
 
     res.status(201).json({
       status: "success",
+      message: "User successful register",
       data: {
         ...newUser,
         email,
       },
     })
   } catch (err) {
-    return next(new ApiError(err.message, 500))
+    return next(new ApiError(err.message, 400))
   }
 }
 
@@ -83,11 +84,11 @@ const login = async (req, res, next) => {
 
       res.status(200).json({
         status: "success",
-        message: "User success login",
+        message: "User successful login",
         data: token,
       })
     } else {
-      return next(new ApiError("wrong password or user doesn't exist", 400))
+      return next(new ApiError("wrong password or user doesn't exist", 401))
     }
   } catch (err) {
     next(new ApiError(err.message, 500))

@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     const bearerToken = req.headers.authorization
 
     if (!bearerToken) {
-      next(new ApiError("Tokennya tidak ada", 401))
+      next(new ApiError("Token doesn't exist", 404))
     }
 
     const token = bearerToken.split("Bearer ")[1]

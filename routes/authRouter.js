@@ -1,7 +1,6 @@
 const router = require("express").Router()
 
 const Auth = require("../controller/authController")
-const checkToken = require("../middlewares/checkToken")
 const authenticate = require("../middlewares/authenticate")
 const checkRole = require("../middlewares/checkRole")
 
@@ -16,6 +15,6 @@ router.post(
 )
 router.post("/admin/login", Auth.login)
 
-router.get("/me", checkToken, Auth.checktoken)
+router.get("/me", authenticate, Auth.checktoken)
 
 module.exports = router
